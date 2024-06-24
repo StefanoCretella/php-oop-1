@@ -4,9 +4,9 @@ class Movie {
     public $title;
     public $director;
     public $year;
-    public $genre;
+    public $genres;
 
-    public function __construct($title, $director, $year, $genre) {
+    public function __construct($title, $director, $year, $genres) {
         $this->title = $title;
         $this->director = $director;
 
@@ -15,17 +15,21 @@ class Movie {
         }
         $this->year = $year;
         
-        $this->genre = $genre;
+        if (!is_array($genres) || empty($genres)) {
+            throw new Exception("Generi non validi: deve essere un array non vuoto");
+        }
+        $this->genres = $genres;
     }
 
     public function getMovieInfo() {
-        return "Titolo: $this->title, Regista: $this->director, Anno: $this->year, Genere: $this->genre";
+        $genres_str = implode(", ", $this->genres);
+        return "Titolo: $this->title, Regista: $this->director, Anno: $this->year, Generi: $genres_str";
     }
 }
 
 try {
-    $movie1 = new Movie("Inception", "Christopher Nolan", 2010, "Sci-Fi");
-    $movie2 = new Movie("The Godfather", "Francis Ford Coppola", 1972, "Crime");
+    $movie1 = new Movie("Inception", "Christopher Nolan", 2010, ["Sci-Fi", "Action"]);
+    $movie2 = new Movie("The Godfather", "Francis Ford Coppola", 1972, ["Crime", "Drama"]);
 
     echo $movie1->getMovieInfo() . "<br>";
     echo $movie2->getMovieInfo() . "<br>";
